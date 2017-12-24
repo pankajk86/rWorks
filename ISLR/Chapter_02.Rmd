@@ -1,0 +1,49 @@
+---
+title: "ISLR_Chapter_02"
+author: "Pankaj Kumar"
+date: "12/23/2017"
+output: html_document
+---
+
+Goal: Load a dataset in "College.csv" and format it so that columns represent actual metrics. We don't want college names as a columns in the dataset, because, it will not add any value in the data analysis. Instead, we would like to set the rownames by the college names.
+```{r}
+# loads the College.csv dataset to a variable.
+college = read.csv("College.csv", header = T)
+# sets the name for each of the rows. 
+# In current case, we are setting the name of each row by the first column of the data set, i.e. 'college name' in this case.
+# 
+# For a data frame, rownames and colnames eventually call row.names and names respectively, but the latter are preferred.
+rownames(college) = college[,1]
+# update the college variable by removing the first column, i.e. by removing 'college name' in current case.
+college = college[, -1]
+college
+```
+
+Goal: we will perform some analysis on this dataset:
+```{r}
+summary(college)
+# scatter plots for the first ten columns
+pairs(college[, 1:10])
+# creates a boxplot of Outstate vs Private
+plot(college$Outstate, college$Private)
+```
+
+Goal: We want to create a qualitative variable called "Elite", by binning the "Top10perc" variable from the college dataset.
+
+```{r}
+# create a variable with value as "No" for nrow() count.
+elite = rep("No", nrow(college))
+# update the value of the variable list, depending on a condition. 
+# In this case, we are updating Elite = "Yes", if the  column "Top10perc" in the "college" dataset has value greater than 50.
+elite[college$Top10perc > 50] = "Yes"
+# replacing "Yes" / "No" with Yes/No. (Optional, I guess.)
+elite = as.factor(elite)
+
+college = data.frame(college, elite)
+college_with_elite = subset(college, elite=='Yes')
+college_with_elite
+nrow(college_with_elite)
+```
+
+
+

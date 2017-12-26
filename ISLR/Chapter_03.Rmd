@@ -1,0 +1,107 @@
+---
+title: "Chapter_03"
+author: "Pankaj Kumar"
+date: "12/23/2017"
+output: html_document
+---
+
+Load MASS library, as we need to work on **Boston** dataset.
+```{r}
+library(MASS)
+#Boston
+names(Boston)
+```
+
+We will create a simple single linear regression model with **Boston** library's *lstat* as **predictor** and *medv* as **response**.
+
+```{r}
+#lm.fit=lm(medv~lstat, data=Boston)
+attach(Boston)
+lm.fit = lm(medv~lstat)
+lm.fit
+summary(lm.fit)
+anova(lm.fit)
+```
+
+```{r}
+plot(lstat, medv)
+abline(h=mean(medv))
+abline(lm.fit, col="blue")
+```
+
+```{r}
+names(lm.fit)
+confint(lm.fit)
+predict(lm.fit ,data.frame(lstat=c(5 ,10 ,15)),interval ="confidence")
+```
+
+Residual plots:
+```{r}
+plot(lm.fit)
+```
+
+Now that we have gone through a single linear regression model (with one predictor), we will create a multiple linear regression model with all thirteen predictors:
+
+```{r}
+mul.lm.fit = lm(medv ~ ., data = Boston)
+summary(mul.lm.fit)
+```
+
+```{r}
+plot(mul.lm.fit)
+```
+
+Multiple linear regression without a predictor, for example: age.
+
+```{r}
+mul.lm.fit.without.age = update(mul.lm.fit, ~ . -age)
+summary(mul.lm.fit.without.age)
+```
+
+Multiple linear regression with interaction terms
+
+```{r}
+mul.lm.fit.interact.age = lm(medv ~ lstat * age, data = Boston)
+summary(mul.lm.fit.interact.age)
+```
+
+Non-linear Transformations of the Predictors with single predictor:
+
+```{r}
+lm.fit.non.linear = lm(medv ~ lstat + I(lstat^2), data = Boston)
+summary(lm.fit.non.linear)
+plot(lm.fit.non.linear)
+```
+
+```{r}
+# attach(Boston)
+# plot(lstat, medv)
+# abline(lm.fit.non.linear, col="blue")
+anova(lm.fit, lm.fit.non.linear)
+```
+
+Polynomial fit for linear regression:
+```{r}
+lm.fit.non.linear.degree5 = lm(medv ~ poly(lstat, 5), data = Boston)
+summary(lm.fit.non.linear.degree5)
+plot(lm.fit.non.linear.degree5)
+```
+
+======================CARSEATS DATASET FOR QUALITATIVE PREDICTORS========================
+
+```{r}
+library(ISLR)
+names(Carseats)
+Carseats
+attach(Carseats)
+```
+
+Multiple regression model with interaction terms for Carseats dataset:
+
+```{r}
+lm.fit.qual = lm(Sales ~ . + Income:Advertising + Price:Age, data = Carseats)
+summary(lm.fit.qual)
+contrasts(ShelveLoc)
+```
+
+

@@ -1,0 +1,18 @@
+---
+title: "Test"
+author: "Pankaj Kumar"
+date: "12/25/2017"
+output: html_document
+---
+
+```{r}
+a = 0.90
+b = (1-a)/2
+b
+qnorm(0.975)
+```
+
+```{r}
+# testing different symbol
+plot (1:24 ,1:24, pch =1:24)
+```

@@ -239,8 +239,91 @@ legend("topleft", c("Least Square", "Population Regression", "Polynomial fit"), 
 # polynomial fit is not good
 ```
 
+ISLR: 3.14.
+ 
 ```{r}
+set.seed(1)
+x1 = runif(100)
+x2 = 0.5*x1 + rnorm(100)/10
+y= 2 + 2*x1 + 0.3*x2 + rnorm(100)
+
+print("------correlation between x1 and x2-------")
+cor(x1, x2)
+plot(x1, x2)
+
+lm.fit.14.1 = lm(y ~ x1 + x2)
+summary(lm.fit.14.1)
 
 ```
 
+```{r}
+lm.fit.14.2 = lm(y ~ x2)
+summary(lm.fit.14.2)
+```
 
+ISLR: 3.15.
+
+```{r}
+library(MASS)
+names(Boston)
+head(Boston, n=10)
+```
+
+```{r}
+lm.fit.15.1 = lm(crim ~ . , data = Boston)
+summary(lm.fit.15.1)
+```
+
+```{r}
+lm.fit.15.zn = lm(crim ~ zn , data = Boston)
+lm.fit.15.indus = lm(crim ~ indus , data = Boston)
+lm.fit.15.chas = lm(crim ~ chas , data = Boston)
+lm.fit.15.nox = lm(crim ~ nox , data = Boston)
+lm.fit.15.rm = lm(crim ~ rm , data = Boston)
+lm.fit.15.age = lm(crim ~ age , data = Boston)
+lm.fit.15.dis = lm(crim ~ dis , data = Boston)
+lm.fit.15.rad = lm(crim ~ rad , data = Boston)
+lm.fit.15.tax = lm(crim ~ tax , data = Boston)
+lm.fit.15.ptratio = lm(crim ~ ptratio , data = Boston)
+lm.fit.15.black = lm(crim ~ black , data = Boston)
+lm.fit.15.lstat = lm(crim ~ lstat , data = Boston)
+lm.fit.15.medv = lm(crim ~ medv , data = Boston)
+
+sprintf("First Coefficient: %2.5f, Second Coeffiient: %2.5f", lm.fit.15.zn$coefficients[1], lm.fit.15.zn$coefficients[2])
+
+simple.reg = vector("numeric", 0L)
+simple.reg = c(simple.reg, lm.fit.15.zn$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.indus$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.chas$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.nox$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.rm$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.age$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.dis$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.rad$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.tax$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.ptratio$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.black$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.lstat$coefficient[2])
+simple.reg = c(simple.reg, lm.fit.15.medv$coefficient[2])
+
+print("-------univariate regression coefficients-------")
+simple.reg
+
+print("-------multiple regression coefficients-------")
+mult.reg = vector("numeric", 0L)
+mult.reg = c(mult.reg, lm.fit.15.1$coefficients)
+# need to remove the intercept coefficient estimate
+mult.reg = mult.reg[-1]
+mult.reg
+
+plot(simple.reg, mult.reg)
+```
+
+```{r}
+lm.fit.15.2 = lm(crim ~ poly(medv, 3), data = Boston)
+summary(lm.fit.15.2)  
+# significant degree of polynomial
+# zn-2, indus-3, nox -3, rm -2, age - 3, dis -3 , rad-2, tax-2, ptratio-3, black -1, 
+# lstat-2, medv -3 
+
+```

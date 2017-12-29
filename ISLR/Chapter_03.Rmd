@@ -104,4 +104,143 @@ summary(lm.fit.qual)
 contrasts(ShelveLoc)
 ```
 
+========================EXERCISE========================
+
+```{r}
+names(Auto)
+summary(Auto)
+head(Auto, n=10)
+attach(Auto)
+```
+
+```{r}
+lm.fit.auto = lm(mpg ~ horsepower, data = Auto)
+summary(lm.fit.auto)
+mean(mpg)
+```
+
+```{r}
+plot(horsepower, mpg)
+abline(h=mean(mpg))
+abline(lm.fit.auto, col = "blue")
+plot(lm.fit.auto)
+
+# prediction
+predict(lm.fit.auto ,data.frame(horsepower=c(98)),interval ="confidence")
+predict(lm.fit.auto ,data.frame(horsepower=c(98)),interval ="prediction")
+```
+
+ISLR: 3.9.
+```{r}
+auto.without.name = Auto[1:8]
+auto.without.name
+cor(auto.without.name)
+#as.data.frame(as.table(cor(auto.without.name)))
+```
+
+```{r}
+lm.fit.auto.mul = lm(mpg ~ ., data = auto.without.name)
+summary(lm.fit.auto.mul)
+plot(lm.fit.auto.mul)
+```
+
+
+
+
+```{r}
+lm.fit.auto.mul1 = lm(mpg ~ displacement*cylinders + displacement * weight, data = auto.without.name)
+summary(lm.fit.auto.mul1)
+plot(lm.fit.auto.mul1)
+```
+
+From the above result, we can see that **cylinders** and the interaction **displacement:cylinders** are not significant. So, we can remove them from our linear model.
+
+```{r}
+lm.fit.auto.mul2 = lm(mpg ~ displacement*weight, data = auto.without.name)
+summary(lm.fit.auto.mul2)
+plot(lm.fit.auto.mul2)
+
+# For the output for the summary for "lm.fit.auto.mul2", we can see that RSE = 4.097, which causes the reduction of error % ((RSE*100)/mean) from 20.92% to 17.47%.
+```
+
+```{r}
+lm.fit.auto.mul3 = lm(mpg ~ displacement*weight + year, data = auto.without.name)
+summary(lm.fit.auto.mul3)
+plot(lm.fit.auto.mul3)
+
+# Here, I got lower RSE; however, from the residual charts we can infer that this model is not better than the previous one, as there's some pattern in them.
+```
+
+ISLR: 3.10.
+
+```{r}
+Carseats
+lm.fit.carseats.mul = lm(Sales ~ Price + Urban + US, data = Carseats)
+summary(lm.fit.carseats.mul)
+
+# without Urban, for Urban is not significant
+lm.fit.carseats.mul2 = lm(Sales ~ Price + US, data = Carseats)
+summary(lm.fit.carseats.mul2)
+
+# confidence interval for the coefficients
+confint(lm.fit.carseats.mul2)
+
+plot(lm.fit.carseats.mul2)
+```
+
+ISLR: 3.11.
+
+```{r}
+set.seed (1)
+x=rnorm (100)
+y=2*x+rnorm (100)
+
+lm.fit.11.a = lm(y ~ x + 0)
+summary(lm.fit.11.a)
+```
+
+ISLR: 3.12.
+
+```{r}
+set.seed (1)
+x=rnorm (100)
+y=x+rnorm (100)
+
+#lm.fit.12.a = lm(y ~ x + 0) # estimate coeff. = 1.9939
+lm.fit.12.a = lm(x ~ y + 0) # estimate coeff. = 0.39111
+summary(lm.fit.12.a)
+```
+
+ISLR: 3.13.
+
+```{r}
+set.seed(1)
+x = rnorm(100)
+eps = rnorm(100, sd=sqrt(0.25))
+y = -1 + 0.5 * x + eps
+length(y)
+plot(x, y)
+lm.fit.13.1 = lm(y ~ x)
+summary(lm.fit.13.1)
+
+# linear model
+abline(lm.fit.13.1, col = "red")
+
+# population linear regression model
+abline(-1, 0.5, col = "blue")
+
+# polynomial fit
+lm.fit.13.2 = lm(y ~ poly(x, 2))
+summary(lm.fit.13.2)
+abline(lm.fit.13.2, col = "black")
+
+legend("topleft", c("Least Square", "Population Regression", "Polynomial fit"), col = c("red", "blue", "black"), lty = c(1, 1, 1))
+
+# polynomial fit is not good
+```
+
+```{r}
+
+```
+
 

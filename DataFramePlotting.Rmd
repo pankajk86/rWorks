@@ -1,0 +1,61 @@
+---
+title: "Data Frames and Plotting"
+author: "Pankaj Kumar"
+date: "12/25/2017"
+output: html_document
+---
+
+
+```{r}
+#getwd()
+#phys = physicians/1000 population, un.date= date joined the UN
+conts = read.csv('ISLR/Data/conts.csv', na.string='.',stringsAsFactors=FALSE)
+world = read.csv('ISLR/Data/world.csv', na.string='.',stringsAsFactors=FALSE)
+head(conts)
+head(world)
+```
+
+```{r}
+world1 = merge(world, conts, by='country')
+head(world1)
+```
+
+```{r}
+sum(world1$cont.x == 'EU')
+table(world1$cont.x)
+```
+
+```{r}
+boxplot(split(world1$literacy, world1$cont.x))
+```
+
+```{r}
+plot(world$literacy,world$income)
+```
+
+```{r}
+# before converting to factor
+mode(world1$cont.x) # character
+class(world1$cont.x) # character
+
+world1$cont.x = factor(world1$cont.x)
+
+# after converting to factor
+mode(world1$cont.x) # numeric
+class(world1$cont.x) # factor
+
+levels(world1$cont.x)
+mycolors = c('red','yellow','blue','green','orange','violet')
+
+plot(world1$literacy, world1$income, col=mycolors[world1$cont.x])
+legend('topleft',legend=levels(world1$cont.x),col=mycolors,pch=1,title='Continent')
+title('Income versus Literacy for Countries around the World')
+```
+
+
+
+
+
+
+
+

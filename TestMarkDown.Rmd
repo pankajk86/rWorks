@@ -1,18 +1,26 @@
 ---
-title: "Test"
+title: "Data Frames and Plotting"
 author: "Pankaj Kumar"
 date: "12/25/2017"
 output: html_document
 ---
 
+
 ```{r}
-a = 0.90
-b = (1-a)/2
-b
-qnorm(0.975)
+#getwd()
+#phys = physicians/1000 population, un.date= date joined the UN
+conts = read.csv('ISLR/Data/conts.csv', na.string='.',stringsAsFactors=FALSE)
+world = read.csv('ISLR/Data/world.csv', na.string='.',stringsAsFactors=FALSE)
+head(conts)
+head(world)
 ```
 
 ```{r}
-# testing different symbol
-plot (1:24 ,1:24, pch =1:24)
+world1 = merge(world, conts, by='country')
+head(world1)
+```
+
+```{r}
+sum(world1$cont.x == 'EU')
+table(world1$cont.x)
 ```

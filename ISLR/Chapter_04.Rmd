@@ -1,0 +1,41 @@
+---
+title: "Chapter_04"
+author: "Pankaj Kumar"
+date: "1/4/2018"
+output: html_document
+---
+
+```{r}
+library(ISLR)
+head(Default, n=10)
+names(Default)
+nrow(Default)
+```
+
+```{r}
+
+attach(Default)
+# convert the predictor to a factor, based on which the classification need to be done.
+# in this case, we are classifying on the basis of default field.
+default = factor(default)
+# check the class (to be "factor") and mode (to be "numeric")
+class(default)
+mode(default)
+
+# check the possible values of the factors
+levels(default) # in this case, it is "Yes" and "No"
+
+# create color list for possible labels of the factor.
+default.colors = c('blue', 'red')
+
+# plot the graph with colors assigned to corresponding factors
+plot(balance, income, col = default.colors[default])
+
+# add legend
+legend('topright',legend = levels(default), col = default.colors, pch = 1, title = "Default", cex = 0.6) # cex for the size of the text
+
+```
+
+
+
+
